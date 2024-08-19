@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Impossible Button CAPTCHA</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #222;
+            color: #f7f7f7;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            flex-direction: column;
+        }
+
+        .captcha-container {
+            background-color: #333;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.5);
+            text-align: center;
+            max-height: 80vh;
+            overflow-y: scroll;
+            width: 80vw;
+        }
+
+        .captcha-container h1 {
+            margin-bottom: 20px;
+            font-size: 1.8em;
+            color: #f95356;
+        }
+
+        .captcha-grid {
+            display: grid;
+            grid-template-columns: repeat(50, 1fr);
+            grid-gap: 5px;
+        }
+
+        .captcha-button {
+            padding: 10px;
+            font-size: 0.8em;
+            border: 2px solid #555;
+            border-radius: 5px;
+            background-color: #111;
+            color: #fff;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .captcha-button:hover {
+            background-color: #444;
+        }
+
+        .message {
+            margin-top: 20px;
+            font-size: 1.2em;
+            color: #ff3b3b;
+        }
+    </style>
+</head>
+<body>
+
+<div class="captcha-container">
+    <h1>Impossible Button CAPTCHA</h1>
+    <div class="captcha-grid" id="captchaGrid"></div>
+    <div id="message" class="message"></div>
+</div>
+
+<script>
+    function generateCaptcha() {
+        const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+        let captcha = '';
+        for (let i = 0; i < 5; i++) {
+            captcha += chars.charAt(Math.floor(Math.random() * chars.length));
+        }
+        return captcha;
+    }
+
+    const captchaText = generateCaptcha();
+    const captchaGrid = document.getElementById('captchaGrid');
+    const message = document.getElementById('message');
+
+    function createButton(captcha, isCorrect) {
+        const button = document.createElement('button');
+        button.className = 'captcha-button';
+        button.innerText = captcha;
+        button.onclick = function () {
+            if (isCorrect) {
+                message.style.color = 'green';
+                message.innerText = 'CAPTCHA verified successfully!';
+            } else {
+                message.style.color = 'red';
+                message.innerText = 'CAPTCHA verification failed. Please try again.';
+            }
+        };
+        captchaGrid.appendChild(button);
+    }
+
+    function populateCaptchaGrid() {
+        const correctIndex = Math.floor(Math.random() * 10000);
+
+        for (let i = 0; i < 10000; i++) {
+            const randomCaptcha = generateCaptcha();
+            createButton(randomCaptcha, i === correctIndex);
+        }
+    }
+
+    populateCaptchaGrid();
+</script>
+
+</body>
+</html>
